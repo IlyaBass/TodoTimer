@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class MainViewModel : ViewModel() {
+class MainViewModel() : ViewModel() {
 
     private val _todoList = MutableStateFlow(listOf(
         "Need to wash the dishes",

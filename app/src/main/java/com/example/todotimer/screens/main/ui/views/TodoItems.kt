@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import com.example.todotimer.screens.main.viewmodel.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todotimer.screens.main.entity.TodoUiEntity
 
 @Composable
 fun TodoItems(
