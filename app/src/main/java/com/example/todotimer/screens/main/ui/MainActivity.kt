@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val viewModel: MainViewModel by viewModels()
+        // TODO(make vm work!)
 
         setContent {
             TodoTimerTheme {
