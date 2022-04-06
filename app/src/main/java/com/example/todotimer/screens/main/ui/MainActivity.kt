@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.todotimer.screens.common.theme.TodoTimerTheme
+import com.example.todotimer.screens.main.ui.views.Dialog
 import com.example.todotimer.screens.main.ui.views.Layout
 import com.example.todotimer.screens.main.viewmodel.MainViewModel
 
@@ -38,13 +39,14 @@ class MainActivity : ComponentActivity() {
                         floatingActionButton = {
                             FloatingActionButton(
                                 modifier = Modifier.alpha(viewModel.isFloatingBtnVisible.collectAsState().value),
-                                onClick = { /*TODO*/ }
+                                onClick = { viewModel.showDialog() }
                             ) {
                                 Icon(Icons.Filled.Add, "", tint = Color.White)
                             }
                         }
                     ) {
                         Layout(context = this)
+                        Dialog()
                     }
                 }
             }
