@@ -1,16 +1,14 @@
 package com.example.todotimer.di.common.android
 
 import android.content.Context
-import com.example.todotimer.App
 import dagger.Module
 import dagger.Provides
 
 @Module
-object AndroidModule {
+class AndroidModule(val context: Context) {
 
     @Provides
-    @JvmStatic
-    internal fun provideApplicationContext(
-        app: App
-    ): Context = app
+    fun provideContext(): Context {
+        return context
+    }
 }

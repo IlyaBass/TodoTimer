@@ -12,11 +12,15 @@ class TodoDatabaseEntity(
     val id: Long,
 
     @ColumnInfo(name = TITLE)
-    val title: String
+    val title: String,
+
+    @ColumnInfo(name = TIME)
+    val time: String
 ) {
     companion object {
         const val TODO_NAME = "todo"
         const val ID = "id"
         const val TITLE = "title"
+        const val TIME = "time"
     }
 }

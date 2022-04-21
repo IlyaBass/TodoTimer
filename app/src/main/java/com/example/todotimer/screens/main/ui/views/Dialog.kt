@@ -24,7 +24,7 @@ fun Dialog(viewModel: MainViewModel = viewModel()) {
     if (isDialogVisible) {
         AlertDialog(
             modifier = Modifier.padding(10.dp),
-            onDismissRequest = { /*TODO*/ },
+            onDismissRequest = { viewModel.hideDialog() },
             title = {
                 TextField(
                     value = dialogTodoTitle,
@@ -40,7 +40,9 @@ fun Dialog(viewModel: MainViewModel = viewModel()) {
                     AndroidView(
                         {
                             NumberPicker(it).apply {
-                                setOnValueChangedListener { _, _, _ -> }
+                                setOnValueChangedListener { _, _, newValue ->
+                                    viewModel.changeHoursValue(newValue)
+                                }
                                 minValue = 0
                                 maxValue = 12
                             }
@@ -49,18 +51,22 @@ fun Dialog(viewModel: MainViewModel = viewModel()) {
                     AndroidView(
                         {
                             NumberPicker(it).apply {
-                                setOnValueChangedListener { _, _, _ -> }
+                                setOnValueChangedListener { _, _, newValue ->
+                                    viewModel.changeMinutesValue(newValue)
+                                }
                                 minValue = 0
-                                maxValue = 60
+                                maxValue = 59
                             }
                         }
                     )
                     AndroidView(
                         {
                             NumberPicker(it).apply {
-                                setOnValueChangedListener { _, _, _ -> }
+                                setOnValueChangedListener { _, _, newValue ->
+                                    viewModel.changeSecondsValue(newValue)
+                                }
                                 minValue = 0
-                                maxValue = 60
+                                maxValue = 59
                             }
                         }
                     )
@@ -76,7 +82,7 @@ fun Dialog(viewModel: MainViewModel = viewModel()) {
                     Button(onClick = { viewModel.hideDialog() }) {
                         Text(text = "Cancel")
                     }
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = { viewModel.saveTodo() }) {
                         Text(text = "Save")
                     }
                 }

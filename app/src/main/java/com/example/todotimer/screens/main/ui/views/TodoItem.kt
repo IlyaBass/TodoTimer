@@ -16,13 +16,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
+import com.example.todotimer.screens.common.entity.TodoUiEntity
+import com.example.todotimer.screens.main.viewmodel.MainViewModel
 import com.example.todotimer.screens.timer.ui.TimerActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterialApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun TodoItem(
     context: Context,
-    todoItem: String
+    todoItem: TodoUiEntity,
+    viewModel: MainViewModel = viewModel()
 ) {
     Card(
         modifier = Modifier
@@ -32,18 +36,18 @@ fun TodoItem(
             .combinedClickable(
                 onClick = {
                     val intent = Intent(context, TimerActivity::class.java)
+                        .putExtra("todoId", todoItem.id)
                     startActivity(context, intent, null)
-                    // TODO(must go to activity to manage time and the item)
                 },
                 onLongClick = {
-                    // TODO(must delete item)
+                    viewModel.deleteItemById(todoItem.id)
                 }
             ),
         backgroundColor = Color(0xFFB0B6BF),
     ) {
         Text(
             modifier = Modifier.padding(7.dp),
-            text = todoItem,
+            text = todoItem.title,
             fontSize = 18.sp,
             overflow = TextOverflow.Ellipsis,
             maxLines = 2,

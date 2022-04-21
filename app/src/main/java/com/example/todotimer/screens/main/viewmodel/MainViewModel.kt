@@ -1,25 +1,32 @@
 package com.example.todotimer.screens.main.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
+import com.example.domain.common.core.utils.Mapper
+import com.example.domain.interactor.AddTodoUseCase
+import com.example.domain.interactor.DeleteTodoUseCase
+import com.example.domain.interactor.GetTodosUseCase
+import com.example.domain.repo.todo.entity.TodoData
+import com.example.todotimer.screens.common.entity.TodoUiEntity
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
-class MainViewModel() : ViewModel() {
+const val HH_MM_SS_PATTERN: String = "HH:mm:ss"
 
-    private val _todoList = MutableStateFlow(listOf(
-        "Need to wash the dishes",
-        "Learn about fragments and activities",
-        "Make my own cool application",
-        "Need to wash the dishes",
-        "Learn about fragments and activities",
-        "Make my own cool application",
-        "Need to wash the dishes",
-        "Learn about fragments and activities",
-        "Make my own cool application",
-        "Need to wash the dishes",
-        "Learn about fragments and activities",
-        "Make my own cool application"
-    ))
+@SuppressLint("CheckResult")
+class MainViewModel(
+    private val mapper: Mapper<TodoData, TodoUiEntity>,
+    private val getTodosUseCase: GetTodosUseCase,
+    private val addTodoUseCase: AddTodoUseCase,
+    private val deleteTodoUseCase: DeleteTodoUseCase
+) : ViewModel() {
+
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern(HH_MM_SS_PATTERN)
+
+    private val _todoList = MutableStateFlow(listOf<TodoUiEntity>())
     val todoList = _todoList.asStateFlow()
 
     private val _isFloatingBtnVisible = MutableStateFlow(1F)
@@ -31,12 +38,78 @@ class MainViewModel() : ViewModel() {
     private val _isDialogVisible = MutableStateFlow(false)
     val isDialogVisible = _isDialogVisible.asStateFlow()
 
+    private val _hoursValue = MutableStateFlow(0)
+    private val _minutesValue = MutableStateFlow(0)
+    private val _secondsValue = MutableStateFlow(0)
+
+    private fun formatStringToTime(): LocalTime {
+        if (_hoursValue.value == 0 && _minutesValue.value == 0 && _secondsValue.value == 0) {
+            _secondsValue.value = 5
+        }
+        val hours = if (_hoursValue.value.toString().length < 2) {
+            "0${_hoursValue.value}"
+        } else {
+            _hoursValue.value.toString()
+        }
+        val minutes = if (_minutesValue.value.toString().length < 2) {
+            "0${_minutesValue.value}"
+        } else {
+            _minutesValue.value.toString()
+        }
+        val seconds = if (_secondsValue.value.toString().length < 2) {
+            "0${_secondsValue.value}"
+        } else {
+            _secondsValue.value.toString()
+        }
+        val time = "${hours}:${minutes}:${seconds}"
+        return LocalTime.parse(time, dateTimeFormatter)
+    }
+
+    private fun resetAllValues() {
+        _isDialogVisible.value = false
+        _dialogTodoTitle.value = ""
+        _hoursValue.value = 0
+        _minutesValue.value = 0
+        _secondsValue.value = 0
+    }
+
+    fun loadTodos(): Disposable {
+        return getTodosUseCase.execute()
+            .subscribe { todoDataList ->
+                _todoList.value = todoDataList.map { mapper.map(it) }
+            }
+    }
+
     fun onListScrolled(firstVisibleItemOffset: Int) {
         if (firstVisibleItemOffset > 0) {
             _isFloatingBtnVisible.value = 0F
         } else {
             _isFloatingBtnVisible.value = 1F
         }
+    }
+
+    fun deleteItemById(id: Long) {
+        deleteTodoUseCase.execute(id).subscribe()
+    }
+
+    fun saveTodo() {
+        addTodoUseCase.execute(
+            title = _dialogTodoTitle.value,
+            time = formatStringToTime()
+        ).subscribe()
+        resetAllValues()
+    }
+
+    fun changeHoursValue(value: Int) {
+        _hoursValue.value = value
+    }
+
+    fun changeMinutesValue(value: Int) {
+        _minutesValue.value = value
+    }
+
+    fun changeSecondsValue(value: Int) {
+        _secondsValue.value = value
     }
 
     fun changeTodoTitle(text: String) {
@@ -48,7 +121,6 @@ class MainViewModel() : ViewModel() {
     }
 
     fun hideDialog() {
-        _isDialogVisible.value = false
-        _dialogTodoTitle.value = ""
+        resetAllValues()
     }
 }
