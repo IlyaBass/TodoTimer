@@ -3,6 +3,7 @@ package com.example.todotimer
 import android.app.Application
 import com.example.todotimer.di.appcomponent.AppComponent
 import com.example.todotimer.di.appcomponent.DaggerAppComponent
+import com.example.todotimer.di.common.android.AndroidModule
 
 class App : Application() {
 
@@ -10,6 +11,11 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.create()
+        appComponent = DaggerAppComponent
+            .builder()
+            .androidModule(AndroidModule(this))
+            .build()
     }
+
+    fun appComponent() = appComponent
 }

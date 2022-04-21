@@ -25,7 +25,7 @@ object TodoRepoModule {
     @Provides
     internal fun provideStorage(
         todoDatabase: TodoDatabase,
-        todoConverter: TodoConverter
+        todoConverter: DbConverter<TodoData, TodoDatabaseEntity>
     ): TodoStorage = TodoDatabaseStorage(
         todoDatabase.todoDao(),
         todoConverter

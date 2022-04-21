@@ -1,15 +1,15 @@
 package com.example.todotimer.repo.todo
 
 import com.example.data.repo.todo.TodoStorage
+import com.example.domain.common.core.utils.DbConverter
 import com.example.domain.repo.todo.entity.TodoData
 import com.example.todotimer.repo.todo.database.TodoDao
-import com.example.todotimer.repo.todo.database.converter.TodoConverter
+import com.example.todotimer.repo.todo.database.entity.TodoDatabaseEntity
 import io.reactivex.Observable
-
 
 class TodoDatabaseStorage(
     private val todoDao: TodoDao,
-    private val todoConverter: TodoConverter
+    private val todoConverter: DbConverter<TodoData, TodoDatabaseEntity>
 ) : TodoStorage {
 
     override fun observe(): Observable<List<TodoData>> = todoDao.observe()
