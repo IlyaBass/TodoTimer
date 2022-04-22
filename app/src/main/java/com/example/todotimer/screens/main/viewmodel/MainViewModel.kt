@@ -2,6 +2,7 @@ package com.example.todotimer.screens.main.viewmodel
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
+import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.Mapper
 import com.example.domain.interactor.AddTodoUseCase
 import com.example.domain.interactor.DeleteTodoUseCase
@@ -11,20 +12,15 @@ import com.example.todotimer.screens.common.entity.TodoUiEntity
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-
-const val HH_MM_SS_PATTERN: String = "HH:mm:ss"
 
 @SuppressLint("CheckResult")
 class MainViewModel(
     private val mapper: Mapper<TodoData, TodoUiEntity>,
     private val getTodosUseCase: GetTodosUseCase,
     private val addTodoUseCase: AddTodoUseCase,
-    private val deleteTodoUseCase: DeleteTodoUseCase
+    private val deleteTodoUseCase: DeleteTodoUseCase,
+    private val timeFormatService: TimeFormatService
 ) : ViewModel() {
-
-    private val dateTimeFormatter = DateTimeFormatter.ofPattern(HH_MM_SS_PATTERN)
 
     private val _todoList = MutableStateFlow(listOf<TodoUiEntity>())
     val todoList = _todoList.asStateFlow()
@@ -42,9 +38,9 @@ class MainViewModel(
     private val _minutesValue = MutableStateFlow(0)
     private val _secondsValue = MutableStateFlow(0)
 
-    private fun formatStringToTime(): LocalTime {
+    private fun formatStringToTime(): Long {
         if (_hoursValue.value == 0 && _minutesValue.value == 0 && _secondsValue.value == 0) {
-            _secondsValue.value = 5
+            _secondsValue.value = 10
         }
         val hours = if (_hoursValue.value.toString().length < 2) {
             "0${_hoursValue.value}"
@@ -62,7 +58,7 @@ class MainViewModel(
             _secondsValue.value.toString()
         }
         val time = "${hours}:${minutes}:${seconds}"
-        return LocalTime.parse(time, dateTimeFormatter)
+        return timeFormatService.fromPattern(time)
     }
 
     private fun resetAllValues() {

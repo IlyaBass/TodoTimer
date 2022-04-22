@@ -1,19 +1,20 @@
 package com.example.todotimer.repo.todo.database.converter
 
+import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.DbConverter
 import com.example.domain.repo.todo.entity.TodoData
 import com.example.todotimer.repo.todo.database.entity.TodoDatabaseEntity
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
-class TodoConverter : DbConverter<TodoData, TodoDatabaseEntity> {
+class TodoConverter(
+    private val timeFormatService: TimeFormatService
+) : DbConverter<TodoData, TodoDatabaseEntity> {
 
     override fun toDbEntity(from: TodoData): TodoDatabaseEntity {
         return with(from) {
             TodoDatabaseEntity(
                 id = id,
                 title = title,
-                time = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+                time = timeFormatService.toPattern(time)
             )
         }
     }
@@ -23,7 +24,7 @@ class TodoConverter : DbConverter<TodoData, TodoDatabaseEntity> {
             TodoData(
                 id = id,
                 title = title,
-                time = LocalTime.parse(time)
+                time = timeFormatService.fromPattern(time)
             )
         }
     }

@@ -1,17 +1,19 @@
-package com.example.todotimer.screens.main.mapper
+package com.example.todotimer.screens.common.mapper
 
+import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.Mapper
 import com.example.domain.repo.todo.entity.TodoData
 import com.example.todotimer.screens.common.entity.TodoUiEntity
-import java.time.format.DateTimeFormatter
 
-class TodoMapper : Mapper<TodoData, TodoUiEntity> {
+class TodoMapper(
+    private val timeFormatService: TimeFormatService
+) : Mapper<TodoData, TodoUiEntity> {
 
     override fun map(from: TodoData): TodoUiEntity = from.run {
         TodoUiEntity(
             id = id,
             title = title,
-            time = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+            time = timeFormatService.toPattern(time)
         )
     }
 }
