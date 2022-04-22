@@ -7,7 +7,11 @@ interface TodoStorage {
 
     fun observe(): Observable<List<TodoData>>
 
+    fun observeById(todoId: Long): Observable<TodoData>
+
     fun add(data: TodoData)
+
+    fun update(data: TodoData)
 
     fun delete(id: Long)
 }

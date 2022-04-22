@@ -2,6 +2,7 @@ package com.example.todotimer.di.repo
 
 import com.example.data.repo.todo.DefaultTodoRepo
 import com.example.data.repo.todo.TodoStorage
+import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.DbConverter
 import com.example.domain.repo.todo.TodoRepo
 import com.example.domain.repo.todo.entity.TodoData
@@ -32,5 +33,7 @@ object TodoRepoModule {
     )
 
     @Provides
-    internal fun provideConverter(): DbConverter<TodoData, TodoDatabaseEntity> = TodoConverter()
+    internal fun provideConverter(
+        timeFormatService: TimeFormatService
+    ): DbConverter<TodoData, TodoDatabaseEntity> = TodoConverter(timeFormatService)
 }

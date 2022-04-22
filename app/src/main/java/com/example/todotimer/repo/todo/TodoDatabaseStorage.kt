@@ -16,7 +16,13 @@ class TodoDatabaseStorage(
         .toObservable()
         .map { it.map(todoConverter::toEntity) }
 
+    override fun observeById(todoId: Long): Observable<TodoData> = todoDao.observeById(todoId)
+        .toObservable()
+        .map (todoConverter::toEntity)
+
     override fun add(data: TodoData) = todoDao.add(todoConverter.toDbEntity(data))
+
+    override fun update(data: TodoData) = todoDao.update(todoConverter.toDbEntity(data))
 
     override fun delete(id: Long) = todoDao.delete(id)
 }

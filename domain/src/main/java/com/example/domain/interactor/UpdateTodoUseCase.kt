@@ -6,20 +6,20 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
-class AddTodoUseCase(
+class UpdateTodoUseCase(
     private val repo: TodoRepo,
     private val uiScheduler: Scheduler
 ) {
 
-    fun execute(title: String, time: Long): Single<Unit> {
-        return Single.fromCallable {
-            repo.add(TodoData(
-                id = 0,
+    fun execute(id: Long, title: String, time: Long): Single<Unit> = Single.fromCallable {
+        repo.update(
+            TodoData(
+                id = id,
                 title = title,
                 time = time
-            ))
-        }
-            .subscribeOn(Schedulers.io())
-            .observeOn(uiScheduler)
+            )
+        )
     }
+        .subscribeOn(Schedulers.io())
+        .observeOn(uiScheduler)
 }
