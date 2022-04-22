@@ -18,6 +18,7 @@
         <activity
             android:name=".screens.main.ui.MainActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.TodoTimer" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
