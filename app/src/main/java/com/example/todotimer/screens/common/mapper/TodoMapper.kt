@@ -13,7 +13,8 @@ class TodoMapper(
         TodoUiEntity(
             id = id,
             title = title,
-            time = timeFormatService.toPattern(time)
+            time = timeFormatService.toPattern(time),
+            running = running
         )
     }
 }

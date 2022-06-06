@@ -12,4 +12,6 @@ interface TodoStorage {
     fun add(data: TodoData)
 
     fun delete(id: Long)
+
+    fun update(data: TodoData)
 }

@@ -15,4 +15,6 @@ class DefaultTodoRepo(
     override fun add(data: TodoData) = todoStorage.add(data)
 
     override fun delete(id: Long) = todoStorage.delete(id)
+
+    override fun update(data: TodoData) = todoStorage.update(data)
 }

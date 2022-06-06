@@ -23,4 +23,6 @@ class TodoDatabaseStorage(
     override fun add(data: TodoData) = todoDao.add(todoConverter.toDbEntity(data))
 
     override fun delete(id: Long) = todoDao.delete(id)
+
+    override fun update(data: TodoData) = todoDao.update(todoConverter.toDbEntity(data))
 }

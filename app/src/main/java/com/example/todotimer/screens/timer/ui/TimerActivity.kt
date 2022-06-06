@@ -29,9 +29,9 @@ class TimerActivity : ComponentActivity() {
 
         (applicationContext as App).appComponent.inject(this)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(TimerViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[TimerViewModel::class.java]
 
-        val todoId: Long = intent.getLongExtra("todoId", 0L)
+        val todoId = intent.getLongExtra("todoId", 0L)
 
         viewModel.getTodoById(todoId)
 
@@ -43,7 +43,7 @@ class TimerActivity : ComponentActivity() {
                         .padding(10.dp, 0.dp),
                     color = MaterialTheme.colors.background
                 ) {
-                    Layout(this)
+                    Layout(this, todoId)
                 }
             }
         }

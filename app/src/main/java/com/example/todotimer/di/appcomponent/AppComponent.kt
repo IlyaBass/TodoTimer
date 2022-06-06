@@ -8,6 +8,7 @@ import com.example.todotimer.di.screens.main.MainModule
 import com.example.todotimer.di.screens.timer.TimerModule
 import com.example.todotimer.screens.main.ui.MainActivity
 import com.example.todotimer.screens.timer.ui.TimerActivity
+import com.example.todotimer.service.TimerService
 import dagger.Component
 import javax.inject.Singleton
 
@@ -27,4 +28,6 @@ interface AppComponent {
     fun inject(mainActivity: MainActivity)
 
     fun inject(timerActivity: TimerActivity)
+
+    fun inject(timerService: TimerService)
 }

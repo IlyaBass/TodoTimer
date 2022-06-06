@@ -1,6 +1,8 @@
 package com.example.todotimer.screens.main.viewmodel
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
 import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.Mapper
@@ -84,6 +86,7 @@ class MainViewModel(
         }
     }
 
+    @MainThread
     fun deleteItemById(id: Long) {
         deleteTodoUseCase.execute(id).subscribe()
     }
@@ -91,7 +94,8 @@ class MainViewModel(
     fun saveTodo() {
         addTodoUseCase.execute(
             title = _dialogTodoTitle.value,
-            time = formatStringToTime()
+            time = formatStringToTime(),
+            running = false
         ).subscribe()
         resetAllValues()
     }
