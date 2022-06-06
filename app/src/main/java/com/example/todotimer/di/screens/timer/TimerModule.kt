@@ -4,6 +4,7 @@ import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.Mapper
 import com.example.domain.interactor.DeleteTodoUseCase
 import com.example.domain.interactor.GetTodoByIdUseCase
+import com.example.domain.interactor.ObserveTodoByIdUseCase
 import com.example.domain.repo.todo.entity.TodoData
 import com.example.todotimer.screens.common.entity.TodoUiEntity
 import com.example.todotimer.screens.common.mapper.TodoMapper
@@ -16,16 +17,12 @@ object TimerModule {
 
     @Provides
     fun provideTimerViewModelFactory(
-        getTodoByIdUseCase: GetTodoByIdUseCase,
-        deleteTodoUseCase: DeleteTodoUseCase,
+        observeTodoByIdUseCase: ObserveTodoByIdUseCase,
         mapper: Mapper<TodoData, TodoUiEntity>,
-        timeFormatService: TimeFormatService
     ): TimerViewModelFactory {
         return TimerViewModelFactory(
-            getTodoByIdUseCase,
-            deleteTodoUseCase,
+            observeTodoByIdUseCase,
             mapper,
-            timeFormatService
         )
     }
 }

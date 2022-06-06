@@ -14,7 +14,8 @@ class TodoConverter(
             TodoDatabaseEntity(
                 id = id,
                 title = title,
-                time = timeFormatService.toPattern(time)
+                time = timeFormatService.toPattern(time),
+                running = running
             )
         }
     }
@@ -24,7 +25,8 @@ class TodoConverter(
             TodoData(
                 id = id,
                 title = title,
-                time = timeFormatService.fromPattern(time)
+                time = timeFormatService.fromPattern(time),
+                running = running
             )
         }
     }

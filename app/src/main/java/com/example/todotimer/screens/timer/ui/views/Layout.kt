@@ -11,19 +11,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.startForegroundService
 import com.example.todotimer.screens.timer.viewmodel.TimerViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.todotimer.screens.main.ui.MainActivity
+import com.example.todotimer.service.TimerService
+import com.example.todotimer.utils.isServiceRunning
 
 @Composable
 fun Layout(
     context: Context,
+    todoId: Long,
     viewModel: TimerViewModel = viewModel()
 ) {
     val todoTitle = viewModel.todoTitle.collectAsState().value
     val todoTime = viewModel.todoTime.collectAsState().value
-    val timerControlBtnTitle = viewModel.timerControlBtnTitle.collectAsState().value
+    val todoRunning = viewModel.todoRunning.collectAsState().value
+    val isStartButtonEnabled = viewModel.isStartButtonEnabled.collectAsState().value
+
+    if (todoTime.contentEquals("00:00:00") || context.isServiceRunning(TimerService::class.java)) {
+        viewModel.switchStartButton(false)
+    } else {
+        viewModel.switchStartButton(true)
+    }
+
     Column(
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -44,15 +54,25 @@ fun Layout(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = {
-                viewModel.removeTodoById()
-                val intent = Intent(context, MainActivity::class.java)
-                startActivity(context, intent, null)
-            }) {
-                Text(text = "Remove")
+
+            Button(
+                enabled = isStartButtonEnabled,
+                onClick = {
+                    startForegroundService(
+                        context, Intent(context, TimerService::class.java)
+                            .putExtra("todoId", todoId)
+                    )
+                }) {
+                Text(text = "Start")
             }
-            Button(onClick = { viewModel.controlTimer() }) {
-                Text(text = timerControlBtnTitle)
+
+            Button(
+                enabled = todoRunning,
+                onClick = {
+                    context.stopService(Intent(context, TimerService::class.java))
+                    viewModel.switchStartButton(!context.isServiceRunning(TimerService::class.java))
+                }) {
+                Text(text = "Stop")
             }
         }
     }

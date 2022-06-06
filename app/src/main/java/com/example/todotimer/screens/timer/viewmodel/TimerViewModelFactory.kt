@@ -6,24 +6,21 @@ import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.Mapper
 import com.example.domain.interactor.DeleteTodoUseCase
 import com.example.domain.interactor.GetTodoByIdUseCase
+import com.example.domain.interactor.ObserveTodoByIdUseCase
 import com.example.domain.repo.todo.entity.TodoData
 import com.example.todotimer.screens.common.entity.TodoUiEntity
 import java.lang.IllegalArgumentException
 
 class TimerViewModelFactory(
-    private val getTodoByIdUseCase: GetTodoByIdUseCase,
-    private val deleteTodoUseCase: DeleteTodoUseCase,
+    private val observeTodoByIdUseCase: ObserveTodoByIdUseCase,
     private val mapper: Mapper<TodoData, TodoUiEntity>,
-    private val timeFormatService: TimeFormatService
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TimerViewModel::class.java)) {
             return TimerViewModel(
-                getTodoByIdUseCase = getTodoByIdUseCase,
-                deleteTodoUseCase = deleteTodoUseCase,
+                observeTodoByIdUseCase = observeTodoByIdUseCase,
                 mapper = mapper,
-                timeFormatService = timeFormatService
             ) as T
         }
         throw IllegalArgumentException("unknown model class $modelClass")

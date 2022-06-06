@@ -1,9 +1,6 @@
 package com.example.todotimer.di.interactor
 
-import com.example.domain.interactor.AddTodoUseCase
-import com.example.domain.interactor.DeleteTodoUseCase
-import com.example.domain.interactor.GetTodoByIdUseCase
-import com.example.domain.interactor.GetTodosUseCase
+import com.example.domain.interactor.*
 import com.example.domain.repo.todo.TodoRepo
 import dagger.Module
 import dagger.Provides
@@ -39,4 +36,16 @@ object InteractorModule {
         repo: TodoRepo,
         uiScheduler: Scheduler
     ): GetTodoByIdUseCase = GetTodoByIdUseCase(repo, uiScheduler)
+
+    @Provides
+    fun provideUpdateTodoUseCase(
+        repo: TodoRepo,
+        uiScheduler: Scheduler
+    ): UpdateTodoUseCase = UpdateTodoUseCase(repo, uiScheduler)
+
+    @Provides
+    fun provideObserveTodoByIdUseCase(
+        repo: TodoRepo,
+        uiScheduler: Scheduler
+    ): ObserveTodoByIdUseCase = ObserveTodoByIdUseCase(repo, uiScheduler)
 }

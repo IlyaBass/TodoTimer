@@ -20,6 +20,7 @@ import com.example.todotimer.screens.common.entity.TodoUiEntity
 import com.example.todotimer.screens.main.viewmodel.MainViewModel
 import com.example.todotimer.screens.timer.ui.TimerActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todotimer.service.TimerService
 
 @OptIn(ExperimentalMaterialApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -28,6 +29,7 @@ fun TodoItem(
     todoItem: TodoUiEntity,
     viewModel: MainViewModel = viewModel()
 ) {
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,13 +38,16 @@ fun TodoItem(
             .combinedClickable(
                 onClick = {
                     val intent = Intent(context, TimerActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         .putExtra("todoId", todoItem.id)
                     startActivity(context, intent, null)
                 },
                 onLongClick = {
+                    if (todoItem.id == TimerService.serviceId) {
+                        context.stopService(Intent(context, TimerService::class.java))
+                    }
                     viewModel.deleteItemById(todoItem.id)
-                }
-            ),
+                }),
         backgroundColor = Color(0xFFB0B6BF),
     ) {
         Text(
