@@ -1,7 +1,6 @@
 package com.example.todotimer.screens.main.viewmodel
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
 import com.example.domain.common.core.service.TimeFormatService
@@ -27,7 +26,7 @@ class MainViewModel(
     private val _todoList = MutableStateFlow(listOf<TodoUiEntity>())
     val todoList = _todoList.asStateFlow()
 
-    private val _isFloatingBtnVisible = MutableStateFlow(1F)
+    private val _isFloatingBtnVisible = MutableStateFlow(true)
     val isFloatingBtnVisible = _isFloatingBtnVisible.asStateFlow()
 
     private val _dialogTodoTitle = MutableStateFlow("")
@@ -79,11 +78,7 @@ class MainViewModel(
     }
 
     fun onListScrolled(firstVisibleItemOffset: Int) {
-        if (firstVisibleItemOffset > 0) {
-            _isFloatingBtnVisible.value = 0F
-        } else {
-            _isFloatingBtnVisible.value = 1F
-        }
+        _isFloatingBtnVisible.value = firstVisibleItemOffset <= 0
     }
 
     @MainThread

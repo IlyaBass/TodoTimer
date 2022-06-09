@@ -5,7 +5,7 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
+    primary = Green,
     primaryVariant = Purple700,
     secondary = Teal200
 )
