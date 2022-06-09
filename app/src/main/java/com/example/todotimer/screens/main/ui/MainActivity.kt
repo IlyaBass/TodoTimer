@@ -4,19 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.todotimer.App
+import com.example.todotimer.screens.common.theme.Green
+import com.example.todotimer.screens.common.theme.ScreenBackground
 import com.example.todotimer.screens.common.theme.TodoTimerTheme
-import com.example.todotimer.screens.main.ui.views.Dialog
+import com.example.todotimer.screens.main.ui.views.TodoDialog
 import com.example.todotimer.screens.main.ui.views.Layout
 import com.example.todotimer.screens.main.viewmodel.MainViewModel
 import com.example.todotimer.screens.main.viewmodel.MainViewModelFactory
@@ -40,25 +39,24 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             TodoTimerTheme {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp, 0.dp),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Scaffold(
-                        floatingActionButton = {
+                Scaffold(
+                    floatingActionButton = {
+                        if (viewModel.isFloatingBtnVisible.collectAsState().value) {
                             FloatingActionButton(
-                                modifier = Modifier.alpha(viewModel.isFloatingBtnVisible.collectAsState().value),
+                                backgroundColor = Green,
                                 onClick = { viewModel.showDialog() }
                             ) {
                                 Icon(Icons.Filled.Add, "", tint = Color.White)
                             }
                         }
-                    ) {
-                        Layout(context = this)
-                        Dialog()
-                    }
+                    },
+                    floatingActionButtonPosition = FabPosition.Center,
+                    backgroundColor = ScreenBackground,
+                    modifier = Modifier
+                        .fillMaxSize(),
+                ) {
+                    Layout(context = this)
+                    TodoDialog()
                 }
             }
         }
