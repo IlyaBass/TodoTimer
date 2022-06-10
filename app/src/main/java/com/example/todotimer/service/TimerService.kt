@@ -47,7 +47,7 @@ class TimerService : Service() {
 
 		val notificationBuilder = Notification
 			.Builder(this, notificationId)
-			.setSmallIcon(R.drawable.ic_launcher_background)
+			.setSmallIcon(R.mipmap.ic_launcher)
 			.setContentIntent(buildPendingIntent(todoId))
 
 		getTodoByIdUseCase.execute(todoId).subscribe { todoData ->
