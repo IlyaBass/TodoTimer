@@ -16,6 +16,4 @@ class App : Application() {
             .androidModule(AndroidModule(this))
             .build()
     }
-
-    fun appComponent() = appComponent
 }

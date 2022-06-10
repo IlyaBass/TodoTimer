@@ -23,42 +23,42 @@ import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: MainViewModelFactory
+	@Inject
+	lateinit var viewModelFactory: MainViewModelFactory
 
-    private lateinit var viewModel: MainViewModel
+	private lateinit var viewModel: MainViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
-        (applicationContext as App).appComponent.inject(this)
+		(applicationContext as App).appComponent.inject(this)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+		viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
 
-        viewModel.loadTodos()
+		viewModel.loadTodos()
 
-        setContent {
-            TodoTimerTheme {
-                Scaffold(
-                    floatingActionButton = {
-                        if (viewModel.isFloatingBtnVisible.collectAsState().value) {
-                            FloatingActionButton(
-                                backgroundColor = Green,
-                                onClick = { viewModel.showDialog() }
-                            ) {
-                                Icon(Icons.Filled.Add, "", tint = Color.White)
-                            }
-                        }
-                    },
-                    floatingActionButtonPosition = FabPosition.Center,
-                    backgroundColor = ScreenBackground,
-                    modifier = Modifier
-                        .fillMaxSize(),
-                ) {
-                    Layout(context = this)
-                    TodoDialog()
-                }
-            }
-        }
-    }
+		setContent {
+			TodoTimerTheme {
+				Scaffold(
+					floatingActionButton = {
+						if (viewModel.isFloatingBtnVisible.collectAsState().value) {
+							FloatingActionButton(
+								backgroundColor = Green,
+								onClick = { viewModel.showDialog() }
+							) {
+								Icon(Icons.Filled.Add, "", tint = Color.White)
+							}
+						}
+					},
+					floatingActionButtonPosition = FabPosition.Center,
+					backgroundColor = ScreenBackground,
+					modifier = Modifier
+						.fillMaxSize(),
+				) {
+					Layout(context = this)
+					TodoDialog()
+				}
+			}
+		}
+	}
 }

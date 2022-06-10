@@ -17,7 +17,10 @@ interface TodoDao {
     fun observe(): Flowable<List<TodoDatabaseEntity>>
 
     @Query("SELECT * FROM $TODO_NAME WHERE id = :todoId")
-    fun observeById(todoId: Long): Single<TodoDatabaseEntity>
+    fun observeById(todoId: Long): Flowable<TodoDatabaseEntity>
+
+    @Query("SELECT * FROM $TODO_NAME WHERE id = :todoId")
+    fun getById(todoId: Long): Single<TodoDatabaseEntity>
 
     @Insert
     fun add(todoItem: TodoDatabaseEntity)

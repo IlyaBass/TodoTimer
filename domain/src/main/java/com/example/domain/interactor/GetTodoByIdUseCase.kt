@@ -12,7 +12,7 @@ class GetTodoByIdUseCase(
 ) {
 
     fun execute(todoId: Long): Observable<TodoData> {
-        return repo.observeById(todoId)
+        return repo.getById(todoId)
             .subscribeOn(Schedulers.io())
             .observeOn(uiScheduler)
     }

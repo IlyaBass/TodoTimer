@@ -12,6 +12,8 @@ class DefaultTodoRepo(
 
     override fun observeById(todoId: Long): Observable<TodoData> = todoStorage.observeById(todoId)
 
+    override fun getById(todoId: Long): Observable<TodoData> = todoStorage.getById(todoId)
+
     override fun add(data: TodoData) = todoStorage.add(data)
 
     override fun delete(id: Long) = todoStorage.delete(id)
