@@ -2,7 +2,6 @@ package com.example.todotimer.screens.main.ui.views
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -78,7 +76,7 @@ fun TodoItem(
                     IconButton(
                         modifier = Modifier.padding(0.dp, 0.dp, 7.dp, 0.dp),
                         onClick = {
-                        if (todoItem.id == TimerService.serviceId) {
+                        if (todoItem.id == TimerService.serviceId.value) {
                             context.stopService(Intent(context, TimerService::class.java))
                         }
                         viewModel.deleteItemById(todoItem.id)

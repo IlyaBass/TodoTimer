@@ -11,7 +11,7 @@ class AddTodoUseCase(
     private val uiScheduler: Scheduler
 ) {
 
-    fun execute(title: String, time: Long, running: Boolean): Single<Unit> {
+    fun execute(title: String, time: String, running: Boolean): Single<Unit> {
         return Single.fromCallable {
             repo.add(TodoData(
                 id = 0,

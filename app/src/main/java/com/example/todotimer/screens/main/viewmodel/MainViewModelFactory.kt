@@ -2,7 +2,6 @@ package com.example.todotimer.screens.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.Mapper
 import com.example.domain.interactor.AddTodoUseCase
 import com.example.domain.interactor.DeleteTodoUseCase
@@ -16,7 +15,6 @@ class MainViewModelFactory(
     private val getTodosUseCase: GetTodosUseCase,
     private val addTodoUseCase: AddTodoUseCase,
     private val deleteTodoUseCase: DeleteTodoUseCase,
-    private val timeFormatService: TimeFormatService
 ): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -26,7 +24,6 @@ class MainViewModelFactory(
                 getTodosUseCase = getTodosUseCase,
                 addTodoUseCase = addTodoUseCase,
                 deleteTodoUseCase = deleteTodoUseCase,
-                timeFormatService = timeFormatService
             ) as T
         }
         throw IllegalArgumentException("unknown model class $modelClass")

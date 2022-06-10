@@ -1,9 +1,7 @@
 package com.example.todotimer.screens.main.viewmodel
 
 import android.annotation.SuppressLint
-import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
-import com.example.domain.common.core.service.TimeFormatService
 import com.example.domain.common.core.utils.Mapper
 import com.example.domain.interactor.AddTodoUseCase
 import com.example.domain.interactor.DeleteTodoUseCase
@@ -20,7 +18,6 @@ class MainViewModel(
     private val getTodosUseCase: GetTodosUseCase,
     private val addTodoUseCase: AddTodoUseCase,
     private val deleteTodoUseCase: DeleteTodoUseCase,
-    private val timeFormatService: TimeFormatService
 ) : ViewModel() {
 
     private val _todoList = MutableStateFlow(listOf<TodoUiEntity>())
@@ -39,7 +36,7 @@ class MainViewModel(
     private val _minutesValue = MutableStateFlow(0)
     private val _secondsValue = MutableStateFlow(0)
 
-    private fun formatStringToTime(): Long {
+    private fun formatStringToTime(): String {
         if (_hoursValue.value == 0 && _minutesValue.value == 0 && _secondsValue.value == 0) {
             _secondsValue.value = 10
         }
@@ -58,8 +55,7 @@ class MainViewModel(
         } else {
             _secondsValue.value.toString()
         }
-        val time = "${hours}:${minutes}:${seconds}"
-        return timeFormatService.fromPattern(time)
+        return "${hours}:${minutes}:${seconds}"
     }
 
     private fun resetAllValues() {
@@ -81,7 +77,6 @@ class MainViewModel(
         _isFloatingBtnVisible.value = firstVisibleItemOffset <= 0
     }
 
-    @MainThread
     fun deleteItemById(id: Long) {
         deleteTodoUseCase.execute(id).subscribe()
     }

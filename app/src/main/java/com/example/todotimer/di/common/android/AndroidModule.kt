@@ -22,7 +22,5 @@ class AndroidModule(val context: Context) {
     fun provideTimeFormatService(): TimeFormatService = DefaultTimeFormatService()
 
     @Provides
-    fun provideMapper(
-        timeFormatService: TimeFormatService
-    ): Mapper<TodoData, TodoUiEntity> = TodoMapper(timeFormatService)
+    fun provideMapper(): Mapper<TodoData, TodoUiEntity> = TodoMapper()
 }

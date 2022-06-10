@@ -1,6 +1,5 @@
 package com.example.todotimer.screens.timer.viewmodel
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import com.example.domain.common.core.utils.Mapper
 import com.example.domain.interactor.ObserveTodoByIdUseCase
@@ -11,7 +10,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-@SuppressLint("CheckResult")
 class TimerViewModel(
     private val observeTodoByIdUseCase: ObserveTodoByIdUseCase,
     private val mapper: Mapper<TodoData, TodoUiEntity>,
@@ -35,7 +33,7 @@ class TimerViewModel(
     private val _isStartButtonEnabled = MutableStateFlow(true)
     val isStartButtonEnabled = _isStartButtonEnabled.asStateFlow()
 
-    fun getTodoById(todoId: Long) {
+    fun observeTodoById(todoId: Long) {
         val disposable = observeTodoByIdUseCase.execute(todoId)
             .subscribe {
                 val todoItem = mapper.map(it)
